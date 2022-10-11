@@ -1,0 +1,83 @@
+#Kalkunpod v.1.0 yaml for kubernetes / podman deployment
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: Kalkunpod
+  labels:
+    name: Kalkunpod
+spec:
+  containers:
+  - name: kalkun-gammu
+    args:
+      - openrc
+      - default
+    env:
+    - name: TZ
+      value: Etc/UTC
+    image: docker.io/junyent/kalkun-gammu:latest
+    resources: {}
+    securityContext:
+      capabilities:
+        drop:
+        - CAP_MKNOD
+        - CAP_NET_RAW
+        - CAP_AUDIT_WRITE
+      seLinuxOptions:
+        level: "s0:c123,c456"
+    tty: true
+    ports:
+      - containerPort: 80
+        hostPort: 80
+    volumeMounts:
+#    - mountPath: /opt/config:Z
+#      name: gammu-config
+    - mountPath: /dev/ttyUSB0
+      name: gammu-ttyusb0
+  - name: kalkun-mariadb
+    args:
+    - mariadbd
+    env:
+    - name: MYSQL_DATABASE
+      value: kalkun
+    - name: MYSQL_USER
+      value: kalkun
+    - name: MYSQL_PASSWORD
+      value: kalkun
+    - name: MYSQL_RANDOM_ROOT_PASSWORD
+      value: RANDOM
+    image: docker.io/junyent/kalkun-mariadb:latest
+    resources: {}
+    securityContext:
+      capabilities:
+        drop:
+        - CAP_MKNOD
+        - CAP_NET_RAW
+        - CAP_AUDIT_WRITE
+      seLinuxOptions:
+        level: "s0:c123,c456"
+    tty: true
+    ports:
+      - containerPort: 3306
+    volumeMounts:
+    - mountPath: /var/lib/mysql:Z
+      name: mysql-db
+  hostname: kalkunpod
+  restartPolicy: OnFailure
+  securityContext:
+    seLinuxOptions:
+      level: "s0:c123,c456"
+  volumes:
+# Mounting gammu-config with Z doesnt work for some reason
+#  - hostPath:
+#      path: /path/to/gammu-config
+#      type: Directory
+#    name: gammu-config
+  - hostPath:
+      path: /path/to/mysql-db
+      type: Directory
+    name: mysql-db
+  - hostPath:
+      path: /dev/ttyUSB0
+      type: CharDevice
+    name: gammu-ttyusb0
+status: {}
