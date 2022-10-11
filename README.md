@@ -22,7 +22,7 @@ A docker-compose script is under development.
 If you prefer to run it directly through cli you can do it with a command similar to this one: (substitute podman for docker where necessary)
 
 ```bash
-# podman run -dt --name kalkun-mariadb -e MYSQL_RANDOM_ROOT_PASSWORD=RANDOM -e MYSQL_DATABASE=kalkun -e MYSQL_USER=kalkun -e MYSQL_PASSWORD=kalkun -v /path/to/mysql-db:/var/lib/mysql:Z docker.io/junyent/kalkun-db && podman run -dt -e TZ=Etc/UTC --device /path/to/ttyUSB0:/dev/ttyUSB0 -p 80:80 --name kalkun-gammu docker.io/junyent/gammu-smsd
+# podman run -dt --name kalkun-mariadb -e MYSQL_RANDOM_ROOT_PASSWORD=RANDOM -e MYSQL_DATABASE=kalkun -e MYSQL_USER=kalkun -e MYSQL_PASSWORD=kalkun -v /path/to/mysql-db:/var/lib/mysql:Z docker.io/junyent/kalkun-mariadb && podman run -dt -e TZ=Etc/UTC --device /path/to/ttyUSB0:/dev/ttyUSB0 -p 80:80 --name kalkun-gammu docker.io/junyent/kalkun-gammu
 ```
 ## License
 The files contained in this repository are licensed under the EUPL v.1.2.
