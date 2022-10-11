@@ -1,4 +1,5 @@
 #Kalkunpod v.1.0 yaml for kubernetes / podman deployment
+#(c) pjunyent, EUPL v.1.2
 apiVersion: apps/v1
 kind: Pod
 metadata:
