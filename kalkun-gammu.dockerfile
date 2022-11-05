@@ -20,7 +20,7 @@ COPY ./config/openrc-gammu-smsd /etc/init.d/gammu-smsd
 RUN /bin/busybox mkdir -p /run/openrc /var/www /var/log/gammu /opt/config\
   && /bin/busybox touch /run/openrc/softlevel \
   # Download kalkun
-  && /bin/busybox wget -q https://github.com/kalkun-sms/Kalkun/releases/download/v0.8.0-rc-1/Kalkun_v0.8.0-rc-1_forPHP8.0.tar.xz -O kalkun.tar.xz \
+  && /bin/busybox wget -q https://github.com/kalkun-sms/Kalkun/releases/download/v0.8.0/Kalkun_v0.8.0_forPHP8.0.tar.xz -O kalkun.tar.xz \
   && /bin/busybox tar -Jxvf kalkun.tar.xz -C /var/www --strip-components=1 \
   && /bin/busybox rm kalkun.tar.xz \
   # Make user www
