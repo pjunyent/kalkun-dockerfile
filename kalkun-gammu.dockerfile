@@ -55,8 +55,9 @@ RUN /bin/busybox sed -i "s|\$config\[\'sess_driver\'\] = \'files\';|\/\/\$config
 RUN /bin/busybox sed -i "s|\$config\[\'append_username\'\] = TRUE;|\$config\[\'append_username\'\] = FALSE;|g" /var/www/application/config/kalkun_settings.php \
   && /bin/busybox sed -i "s|\$config\[\'max_sms_sent_by_minute\'\] = 0;|\$config\[\'max_sms_sent_by_minute\'\] = 0.5;|g" /var/www/application/config/kalkun_settings.php 
 
-#Set scripts path in daemon.sh & outbox_queue.sh
-RUN /bin/busybox sed -i "s|path\/to\/kalkun|var\/www|g" /var/www/scripts/daemon.sh \
+#Set scripts path in daemon.php, daemon.sh & outbox_queue.sh
+RUN /bin/busybox sed -i "s|http\:\/\/localhost\/kalkun|http\:\/\/localhost" /var/www/scripts/daemon.php \
+  && /bin/busybox sed -i "s|path\/to\/kalkun|var\/www|g" /var/www/scripts/daemon.sh \
   && /bin/busybox sed -i "s|path\/to\/kalkun|var\/www|g" /var/www/scripts/outbox_queue.sh
 
 #Configure database connection in database.php
