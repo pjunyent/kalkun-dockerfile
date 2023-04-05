@@ -1,7 +1,7 @@
 <!---(c) pjunyent, EUPL v.1.2 -->
 # Kalkun-dockerfile
 Kalkunpod is a lightweight OCI container for [Kalkun](https://github.com/kalkun-sms/Kalkun) + gammu-smsd + mariadb.
-The image is based on nginx stable for Alpine Linux and php 8, and the latest mariadb ubuntu image.
+The image is based on nginx stable for Alpine Linux and php 8.1, and the latest mariadb ubuntu image.
 
 ## Quick links
 - Mantainer: [pjunyent](https://github.com/pjunyent)
