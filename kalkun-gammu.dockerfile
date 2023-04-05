@@ -10,7 +10,7 @@ ENV TZ=Etc/UTC
 
 #Install gammu-smsd, PHP 8.1, mariadb-client & openrc
 RUN /sbin/apk update && /sbin/apk add --no-cache gammu gammu-smsd gammu-dev\
-    php8 php8-ctype php8-curl php8-fpm php8-intl php8-ldap php8-mbstring php8-session php8-mysqli composer mariadb-client tzdata\
+    php81 php81-ctype php81-curl php81-fpm php81-intl php81-ldap php81-mbstring php81-session php81-mysqli composer mariadb-client tzdata\
     openrc
 
 #Config openrc
@@ -20,18 +20,18 @@ COPY ./config/openrc-gammu-smsd /etc/init.d/gammu-smsd
 RUN /bin/busybox mkdir -p /run/openrc /var/www /var/log/gammu /opt/config\
   && /bin/busybox touch /run/openrc/softlevel \
   # Download kalkun
-  && /bin/busybox wget -q https://github.com/kalkun-sms/Kalkun/releases/download/v0.8.0/Kalkun_v0.8.0_forPHP8.0.tar.xz -O kalkun.tar.xz \
+  && /bin/busybox wget -q https://github.com/kalkun-sms/Kalkun/releases/download/v0.8.0/Kalkun_v0.8.0_forPHP8.1.tar.xz -O kalkun.tar.xz \
   && /bin/busybox tar -Jxvf kalkun.tar.xz -C /var/www --strip-components=1 \
   && /bin/busybox rm kalkun.tar.xz \
   # Make user www
   && /bin/busybox adduser -D -g 'www' www \
-  && /bin/busybox sed -i "s|user\s*=\s*nobody|user = www|g" /etc/php8/php-fpm.d/www.conf \
-  && /bin/busybox sed -i "s|;listen.owner\s*=\s*nobody|listen.owner = www|g" /etc/php8/php-fpm.d/www.conf \
-  && /bin/busybox sed -i "s|;listen.mode\s*=\s*0660|listen.mode = 0660|g" /etc/php8/php-fpm.d/www.conf \
-  && /bin/busybox sed -i "s|;listen.group\s*=\s*nobody|listen.group = www|g" /etc/php8/php-fpm.d/www.conf \
-  && /bin/busybox sed -i "s|group\s*=\s*nobody|group = www|g" /etc/php8/php-fpm.d/www.conf \
-  && /bin/busybox sed -i "s|;chdir\s*=\s/var/www|chdir = /var/www|g" /etc/php8/php-fpm.d/www.conf \
-  && /bin/busybox sed -i "s|;log_level\s*=\s*notice|log_level = notice|g" /etc/php8/php-fpm.conf \
+  && /bin/busybox sed -i "s|user\s*=\s*nobody|user = www|g" /etc/php81/php-fpm.d/www.conf \
+  && /bin/busybox sed -i "s|;listen.owner\s*=\s*nobody|listen.owner = www|g" /etc/php81/php-fpm.d/www.conf \
+  && /bin/busybox sed -i "s|;listen.mode\s*=\s*0660|listen.mode = 0660|g" /etc/php81/php-fpm.d/www.conf \
+  && /bin/busybox sed -i "s|;listen.group\s*=\s*nobody|listen.group = www|g" /etc/php81/php-fpm.d/www.conf \
+  && /bin/busybox sed -i "s|group\s*=\s*nobody|group = www|g" /etc/php81/php-fpm.d/www.conf \
+  && /bin/busybox sed -i "s|;chdir\s*=\s/var/www|chdir = /var/www|g" /etc/php81/php-fpm.d/www.conf \
+  && /bin/busybox sed -i "s|;log_level\s*=\s*notice|log_level = notice|g" /etc/php81/php-fpm.conf \
   \
   && cd /var/www/ \
   && composer install --no-dev
@@ -56,7 +56,7 @@ RUN /bin/busybox sed -i "s|\$config\[\'append_username\'\] = TRUE;|\$config\[\'a
   && /bin/busybox sed -i "s|\$config\[\'max_sms_sent_by_minute\'\] = 0;|\$config\[\'max_sms_sent_by_minute\'\] = 0.5;|g" /var/www/application/config/kalkun_settings.php 
 
 #Set scripts path in daemon.php, daemon.sh & outbox_queue.sh
-RUN /bin/busybox sed -i "s|http\:\/\/localhost\/kalkun|http\:\/\/localhost" /var/www/scripts/daemon.php \
+RUN /bin/busybox sed -i "s|http\:\/\/localhost\/kalkun|http\:\/\/localhost|g" /var/www/scripts/daemon.php \
   && /bin/busybox sed -i "s|path\/to\/kalkun|var\/www|g" /var/www/scripts/daemon.sh \
   && /bin/busybox sed -i "s|path\/to\/kalkun|var\/www|g" /var/www/scripts/outbox_queue.sh
 
@@ -81,7 +81,7 @@ RUN /bin/busybox chown -R www:www /var/www \
   && /bin/busybox chmod +x /var/www/scripts/outbox_queue.sh /var/www/scripts/outbox_queue.php \
   # Create autostart
   && /sbin/rc-update add gammu-smsd default \
-  && /sbin/rc-update add php-fpm8 default \
+  && /sbin/rc-update add php-fpm81 default \
   && /sbin/rc-update add nginx default \
   #Remove hostname & networking error
   && rm /etc/init.d/hostname && rm /etc/init.d/networking
