@@ -12,3 +12,7 @@ depend() {
 start_pre() {
 	sleep 20
 }
+
+stop() {
+  cat /var/run/$RC_SVCNAME.pid | xargs kill 
+}
