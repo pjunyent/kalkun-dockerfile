@@ -1,0 +1,14 @@
+/var/log/gammu.log {
+    copytruncate
+    notifempty
+    nocopy
+    missingok
+    nomail
+    rotate 0
+    nocompress
+    sharedscripts
+    daily
+    size 100k
+}
+~
+

@@ -139,8 +139,9 @@ RUN /sbin/apk update && /sbin/apk add --no-cache \
     php82 php82-ctype php82-curl php82-fpm php82-intl php82-ldap php82-mbstring php82-session php82-mysqli php82-xml composer mariadb-client tzdata \
     cronie cronie-openrc logrotate
 
-#Config Gammu-smsd Openrc init script
+#Config Gammu-smsd Openrc init script & logrotate
 COPY ./config/openrc-gammu-smsd /etc/init.d/gammu-smsd
+COPY ./config/gammu-smsdlogrot /etc/logrotate.d/gammu
 
 #Configure OpenRC & install kalkun
 RUN /bin/busybox mkdir -p /run/openrc /var/www /var/log/gammu /opt/config \
@@ -233,7 +234,7 @@ RUN /bin/busybox chown -R www:www /var/www \
   && rc-update add nginx default \
   && rc-update add cronie default
 
-RUN /bin/busybox chmod +x /etc/init.d/gammu-smsd && /sbin/rc-update add gammu-smsd default \
+RUN /bin/busybox chmod +x /etc/init.d/gammu-smsd \
   # Remove hostname & networking error
   && rm /etc/init.d/hostname && rm /etc/init.d/networking
 

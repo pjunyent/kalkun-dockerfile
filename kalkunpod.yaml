@@ -34,8 +34,6 @@ spec:
 #      name: gammu-config
     - mountPath: /dev/ttyUSB0
       name: gammu-ttyusb0
-    - mountPath: /sys/fs/cgroup:ro
-      name: cgroup
   - name: kalkun-mariadb
     args:
     - mariadbd
@@ -83,8 +81,4 @@ spec:
       path: /dev/ttyUSB0
       type: CharDevice
     name: gammu-ttyusb0
-  - hostPath:
-      path: /sys/fs/cgroup
-      type: Directory
-    name: cgroup
 status: {}
